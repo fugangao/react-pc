@@ -40,13 +40,14 @@ function LayOut () {
   }
   return (
     <Layout className='layout'>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider trigger={null} collapsible collapsed={collapsed} className='sider'>
         <div className="logo" />
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={[pathname]}
+          selectedKeys={[pathname]}
           onSelect={routeChange}
+          style={{ margin: '20px 0' }}
           items={[
             {
               key: '/',
@@ -87,7 +88,7 @@ function LayOut () {
               icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
             >
               <span>{userStore.userInfo.name}</span>
-              <LoginOutlined className='logOut' twoToneColor="#52c41a" />
+              <LoginOutlined className='logOut' />
             </Popconfirm>
 
           </div>

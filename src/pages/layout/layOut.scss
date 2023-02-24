@@ -1,13 +1,17 @@
 .ant-layout {
-  height: 100%;
+  min-height: 100%;
+  .ant-menu-item {
+    margin: 30px 0;
+    height: 60px;
+  }
 }
-
 .trigger {
   padding: 0 24px;
   font-size: 18px;
   line-height: 64px;
   cursor: pointer;
   transition: color 0.3s;
+  margin: 20px 0;
 }
 
 #components-layout-demo-custom-trigger .trigger:hover {
