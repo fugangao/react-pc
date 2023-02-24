@@ -1,0 +1,34 @@
+.ant-layout {
+  height: 100%;
+}
+
+.trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
+}
+
+.logo {
+  height: 32px;
+  padding: 4px;
+  margin: 16px 0;
+  background: url('../../assets/logo.png') no-repeat center;
+  background-size: cover;
+}
+.userInfo {
+  margin-right: 20px;
+  line-height: 64px;
+  span {
+    margin: 0 8px;
+  }
+  .logOut:hover {
+    cursor: pointer;
+    color: red;
+  }
+}

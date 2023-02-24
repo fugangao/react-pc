@@ -1,18 +1,26 @@
 
-import Login from "./pages/login/login"
+import Login from "./pages/login"
 import Layout from "./pages/layout/layout"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-
+import Home from "./pages/home"
+import Article from "./pages/article"
+import Publish from "./pages/publish"
+import { BrowserRouter, Routes, Route, unstable_HistoryRouter as HistoryRouter } from "react-router-dom"
+import AuthComponent from "./components/authRoute.js"
+import { history } from "./utils"
 function App () {
   return (
-    <BrowserRouter>
+    <HistoryRouter history={history}>
       <div className="App">
-        <Routes>
-          <Route path="/" element={<Layout></Layout>}></Route>
+        <Routes >
           <Route path='/login' element={<Login />}></Route>
+          <Route path="/" element={<AuthComponent><Layout /></AuthComponent>}>
+            <Route index element={<Home />}></Route>
+            <Route path="article" element={<Article />}></Route>
+            <Route path="publish" element={<Publish />}></Route>
+          </Route>
         </Routes>
       </div>
-    </BrowserRouter>
+    </HistoryRouter>
 
   )
 }
