@@ -21,10 +21,8 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(res => {
   return res
 }, error => {
-  const { data } = error.response
   if (error.response.status === 401) {
     removeToken()
-    message.error(data.message)
     history.push('/login')
   }
   return Promise.reject(error)

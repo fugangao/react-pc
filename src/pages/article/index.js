@@ -1,18 +1,21 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
-import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select, Table, Tag, Space, message, Popconfirm } from 'antd'
+import { useStore } from '@/store'
+import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select, Table, Tag, Space, Popconfirm } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import 'moment/locale/zh-cn'
 import locale from 'antd/es/date-picker/locale/zh_CN'
-
 import './index.scss'
 import logo from '@/assets/logo.png'
 import { http } from '@/utils'
-
 const { Option } = Select
 const { RangePicker } = DatePicker
-
 const Article = () => {
+  //重置按钮
+  const onReset = () => {
+    setParams({ page: 1, per_page: 10 })
+  }
   //筛选文章
   const onFinish = (value) => {
     // new Date().toLocaleTimeString
@@ -29,20 +32,11 @@ const Article = () => {
     setParams({ ...params, ..._params })
   }
   //获得频道列表
-  const [channelList, setChannelList] = useState([])
-  const loadChannel = async () => {
-    try {
-      const { data } = await http.get('/channels')
-      console.log(data)
-      setChannelList(data.data.channels)
-    } catch (error) {
-      message.error(error.message)
-    }
+  const { channelStore } = useStore()
 
-  }
   useEffect(() => {
-    loadChannel()
-  }, [])
+    channelStore.getChannelList()
+  }, [channelStore])
   //获得文章列表'
   const [articleData, setArticleData] = useState({ list: [], count: 0 })
   const [params, setParams] = useState({ page: 1, per_page: 10 })
@@ -57,6 +51,7 @@ const Article = () => {
   }, [params])
   //分页页码改变
   const pageChange = (page) => {
+    console.log(page)
     setParams({ ...params, page })
   }
   //删除文章
@@ -175,7 +170,7 @@ const Article = () => {
               placeholder="请选择文章频道"
               style={{ width: 120 }}
             >
-              {channelList.map(channel => <Option key={channel.id} value={channel.id}>{channel.name}</Option>)}
+              {channelStore.channelList.map(channel => <Option key={channel.id} value={channel.id}>{channel.name}</Option>)}
             </Select>
           </Form.Item>
 
@@ -188,14 +183,17 @@ const Article = () => {
             <Button type="primary" htmlType="submit" style={{ marginLeft: 80 }}>
               筛选
             </Button>
+            <Button type="primary" style={{ marginLeft: 80 }} onClick={onReset}>
+              重置
+            </Button>
           </Form.Item>
         </Form>
       </Card>
       <Card title={`根据筛选条件共查询到 ${articleData.count} 条结果：`}>
-        <Table rowKey="id" columns={columns} dataSource={articleData.list} pagination={{ hideOnSinglePage: false, pageSize: params.per_page, current: params.page, onChange: pageChange }} />
+        <Table rowKey="id" columns={columns} dataSource={articleData.list} pagination={{ pageSize: params.per_page, current: params.page, onChange: pageChange, total: articleData.count }} />
       </Card>
     </div>
   )
 }
 
-export default Article
+export default observer(Article)
